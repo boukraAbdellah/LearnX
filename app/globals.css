@@ -1,26 +1,88 @@
 @import "tailwindcss";
 
-:root {
-  --background: #ffffff;
-  --foreground: #171717;
+@theme {
+  --color-primary-500: #F97316;
+  --color-primary-400: #FB923C;
+  --color-primary-300: #FDBA74;
+  --color-primary-200: #FED7AA;
+  --color-primary-100: #FFEEE5;
+
+  --color-neutral-900: #0F172A;
+  --color-neutral-700: #334155;
+  --color-neutral-500: #64748B;
+  --color-neutral-300: #CBD5E1;
+  --color-neutral-200: #E2E8F0;
+  --color-neutral-100: #F1F5F9;
+  --color-neutral-50: #FAFAFC;
+
+  --font-serif: var(--font-playfair), Georgia, serif;
+  --font-sans: var(--font-inter), system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+
+  --shadow-sm: 0 1px 2px 0 rgba(15, 23, 42, 0.05);
+  --shadow-md: 0 4px 12px -2px rgba(15, 23, 42, 0.08);
+  --shadow-lg: 0 12px 24px -4px rgba(15, 23, 42, 0.10);
+  --shadow-xl: 0 20px 40px -8px rgba(15, 23, 42, 0.12);
+
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
+/* Custom typography scale utilities matching Vertex Design System */
+.display-1 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 48px;
+  line-height: 56px;
+  font-weight: 700;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
+.display-2 {
+  font-family: var(--font-playfair), Georgia, serif;
+  font-size: 36px;
+  line-height: 44px;
+  font-weight: 700;
 }
 
-body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+.heading-1 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 28px;
+  line-height: 36px;
+  font-weight: 600;
+}
+
+.heading-2 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 22px;
+  line-height: 30px;
+  font-weight: 600;
+}
+
+.heading-3 {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 18px;
+  line-height: 26px;
+  font-weight: 500;
+}
+
+.body-large {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 16px;
+  line-height: 24px;
+  font-weight: 400;
+}
+
+.body-base {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 14px;
+  line-height: 20px;
+  font-weight: 400;
+}
+
+.caption-small {
+  font-family: var(--font-inter), sans-serif;
+  font-size: 12px;
+  line-height: 16px;
+  font-weight: 400;
 }
