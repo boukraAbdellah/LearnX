@@ -22,7 +22,7 @@ export function SearchInput({
       <input
         type="text"
         placeholder={placeholder}
-        className={`w-full h-[44px] pl-11 pr-14 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] placeholder-[#64748B] outline-none transition-colors focus:border-[#FB923C] focus:ring-2 focus:ring-[#FED7AA]/50 ${className}`}
+        className={`w-full h-[44px] pl-11 pr-14 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] placeholder-[#64748B] outline-none transition-colors focus:border-[#6366F1] focus:ring-2 focus:ring-[#A5B4FC]/50 ${className}`}
         {...props}
       />
       {shortcutLabel && (
@@ -42,7 +42,7 @@ export type InputProps = React.InputHTMLAttributes<HTMLInputElement>;
 export function Input({ className = "", ...props }: InputProps) {
   return (
     <input
-      className={`w-full h-[44px] px-4 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] placeholder-[#64748B] outline-none transition-colors focus:border-[#FB923C] focus:ring-2 focus:ring-[#FED7AA]/50 ${className}`}
+      className={`w-full h-[44px] px-4 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] placeholder-[#64748B] outline-none transition-colors focus:border-[#6366F1] focus:ring-2 focus:ring-[#A5B4FC]/50 ${className}`}
       {...props}
     />
   );

@@ -16,11 +16,11 @@ export function Badge({
   let styleClasses = "";
 
   if (variant === "video") {
-    styleClasses = "bg-[#FFEEE5] text-[#F97316] border border-[#FED7AA]/40";
+    styleClasses = "bg-[#E0E7FF] text-[#4F46E5] border border-[#A5B4FC]/40";
   } else if (variant === "lesson") {
     styleClasses = "bg-[#EEF2FF] text-[#4F46E5] border border-[#C7D2FE]/50";
   } else if (variant === "popular") {
-    styleClasses = "bg-[#FFF7ED] text-[#EA580C] border border-[#FDBA74]/40";
+    styleClasses = "bg-[#EEF2FF] text-[#4338CA] border border-[#818CF8]/40";
   }
 
   return (

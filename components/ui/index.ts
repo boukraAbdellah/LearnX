@@ -9,3 +9,4 @@ export * from "./cards";
 export * from "./navigation";
 export * from "./breadcrumbs";
 export * from "./pagination";
+export * from "./bottom-bars";

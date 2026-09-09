@@ -33,23 +33,23 @@ export function Button({
 
   if (variant === "primary") {
     if (disabled) {
-      variantClasses = "bg-[#FFEEE5] text-[#FDBA74] border-transparent shadow-none";
+      variantClasses = "bg-[#E0E7FF] text-[#818CF8] border-transparent shadow-none";
     } else if (isHoveredState) {
-      variantClasses = "bg-[#EA580C] text-white shadow-sm";
+      variantClasses = "bg-[#4338CA] text-white shadow-sm";
     } else {
       variantClasses =
-        "bg-[#F97316] text-white hover:bg-[#EA580C] active:bg-[#C2410C] shadow-sm";
+        "bg-[#4F46E5] text-white hover:bg-[#4338CA] active:bg-[#3730A3] shadow-sm";
     }
   } else if (variant === "secondary") {
     if (disabled) {
       variantClasses =
-        "bg-white border border-[#FED7AA] text-[#FED7AA] shadow-none";
+        "bg-white border border-[#A5B4FC] text-[#A5B4FC] shadow-none";
     } else if (isHoveredState) {
       variantClasses =
-        "bg-[#FFF7ED] border border-[#F97316] text-[#F97316] shadow-sm";
+        "bg-[#EEF2FF] border border-[#4F46E5] text-[#4F46E5] shadow-sm";
     } else {
       variantClasses =
-        "bg-white border border-[#FB923C] text-[#F97316] hover:bg-[#FFF7ED] hover:border-[#F97316] active:bg-[#FFEDD5] shadow-sm";
+        "bg-white border border-[#6366F1] text-[#4F46E5] hover:bg-[#EEF2FF] hover:border-[#4F46E5] active:bg-[#E0E7FF] shadow-sm";
     }
   } else if (variant === "tertiary") {
     if (disabled) {
@@ -64,12 +64,12 @@ export function Button({
     }
   } else if (variant === "text") {
     if (disabled) {
-      variantClasses = "bg-transparent text-[#FED7AA] border-transparent";
+      variantClasses = "bg-transparent text-[#A5B4FC] border-transparent";
     } else if (isHoveredState) {
-      variantClasses = "bg-transparent text-[#EA580C] border-transparent";
+      variantClasses = "bg-transparent text-[#4338CA] border-transparent";
     } else {
       variantClasses =
-        "bg-transparent text-[#F97316] hover:text-[#EA580C] active:text-[#C2410C] border-transparent";
+        "bg-transparent text-[#4F46E5] hover:text-[#4338CA] active:text-[#3730A3] border-transparent";
     }
   }
 

@@ -3,7 +3,6 @@ import { Badge } from "./badge";
 import {
   BarChartIcon,
   ClockIcon,
-  BookmarkIcon,
   PlayCircleIcon,
   ExternalLinkIcon,
   FileTextIcon,
@@ -24,7 +23,7 @@ export function CourseCard({
   title = "Next.js for Production",
   description = "Build scalable, high-performance web applications with Next.js.",
   level = "Intermediate",
-  duration = "16h 24m",
+  duration = "18h 24m",
   modulesCount = 12,
   icon,
   className = "",
@@ -33,30 +32,34 @@ export function CourseCard({
   return (
     <div
       onClick={onClick}
-      className={`bg-white border border-[#E2E8F0] rounded-[16px] p-5 shadow-sm hover:shadow-md transition-shadow flex flex-col justify-between cursor-pointer ${className}`}
+      className={`bg-white border border-[#EDE5DF] rounded-[16px] p-6 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group ${className}`}
     >
       <div>
-        <div className="w-10 h-10 rounded-[10px] bg-black text-white flex items-center justify-center font-bold text-[18px] mb-3">
-          {icon ?? "N"}
+        <div className="mb-4 flex items-center">
+          {icon ?? (
+            <div className="w-11 h-11 rounded-[10px] bg-black text-white flex items-center justify-center font-bold text-[19px]">
+              N
+            </div>
+          )}
         </div>
-        <h3 className="font-semibold text-[16px] text-[#0F172A] leading-tight mb-1.5">
+        <h3 className="font-serif font-bold text-[17px] text-[#0F172A] leading-snug mb-2 group-hover:text-[#4F46E5] transition-colors">
           {title}
         </h3>
-        <p className="text-[#64748B] text-[13px] leading-relaxed line-clamp-2 mb-4">
+        <p className="text-[#64748B] text-[13.5px] leading-relaxed line-clamp-3 mb-6">
           {description}
         </p>
       </div>
-      <div className="flex items-center gap-3 text-[12px] text-[#64748B] pt-3 border-t border-[#F1F5F9]">
+      <div className="flex items-center gap-3.5 text-[12px] text-[#64748B] pt-4 border-t border-[#F1F5F9]">
         <div className="flex items-center gap-1.5">
-          <BarChartIcon size={14} />
+          <BarChartIcon size={14} className="text-[#94A3B8]" />
           <span>{level}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <ClockIcon size={14} />
+          <ClockIcon size={14} className="text-[#94A3B8]" />
           <span>{duration}</span>
         </div>
         <div className="flex items-center gap-1.5">
-          <BookmarkIcon size={14} />
+          <FileTextIcon size={14} className="text-[#94A3B8]" />
           <span>{modulesCount} modules</span>
         </div>
       </div>
@@ -103,7 +106,7 @@ export function LessonVideoCard({
         <button
           type="button"
           onClick={onWatch}
-          className="inline-flex items-center gap-1.5 text-[#F97316] font-medium hover:text-[#EA580C] cursor-pointer text-[13px] transition-colors"
+          className="inline-flex items-center gap-1.5 text-[#4F46E5] font-medium hover:text-[#4338CA] cursor-pointer text-[13px] transition-colors"
         >
           <PlayCircleIcon size={16} />
           <span>Watch from {timestamp}</span>
@@ -148,7 +151,7 @@ export function LessonTopicCard({
         <button
           type="button"
           onClick={onView}
-          className="inline-flex items-center gap-1.5 text-[#F97316] font-medium hover:text-[#EA580C] cursor-pointer text-[13px] transition-colors"
+          className="inline-flex items-center gap-1.5 text-[#4F46E5] font-medium hover:text-[#4338CA] cursor-pointer text-[13px] transition-colors"
         >
           <span>View lesson</span>
           <ExternalLinkIcon size={14} />
@@ -197,7 +200,7 @@ export function ResourceCard({
         <button
           type="button"
           onClick={onDownload}
-          className="text-[#F97316] hover:text-[#EA580C] cursor-pointer p-1 transition-colors"
+          className="text-[#4F46E5] hover:text-[#4338CA] cursor-pointer p-1 transition-colors"
           aria-label="Download resource"
         >
           <ExternalLinkIcon size={16} />

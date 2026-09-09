@@ -17,11 +17,11 @@ export function VertexLogo({ size = 32, className = "" }: IconProps) {
     >
       <path
         d="M6 7L16 25L26 7H20.5L16 16.5L11.5 7H6Z"
-        fill="#F97316"
+        fill="#4F46E5"
       />
       <path
         d="M16 7L18 11.5H14L16 7Z"
-        fill="#FB923C"
+        fill="#6366F1"
       />
     </svg>
   );
@@ -508,3 +508,22 @@ export function AccessibleIcon({ size = 24, className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function StarIcon({ size = 24, className = "" }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.75"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />
+    </svg>
+  );
+}
+

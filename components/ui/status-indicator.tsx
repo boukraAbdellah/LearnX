@@ -26,7 +26,7 @@ export function StatusIndicator({
         height="16"
         viewBox="0 0 16 16"
         fill="none"
-        stroke="#F97316"
+        stroke="#4F46E5"
         strokeWidth="2"
         strokeLinecap="round"
         strokeDasharray="14 6"
@@ -49,11 +49,11 @@ export function StatusIndicator({
         width="16"
         height="16"
         viewBox="0 0 16 16"
-        fill="#F97316"
+        fill="#4F46E5"
         xmlns="http://www.w3.org/2000/svg"
       >
-        <circle cx="8" cy="8" r="7" fill="#FFEEE5" stroke="#F97316" strokeWidth="1.5" />
-        <polygon points="6.5 5 11 8 6.5 11 6.5 5" fill="#F97316" />
+        <circle cx="8" cy="8" r="7" fill="#E0E7FF" stroke="#4F46E5" strokeWidth="1.5" />
+        <polygon points="6.5 5 11 8 6.5 11 6.5 5" fill="#4F46E5" />
       </svg>
     );
   } else if (status === "locked") {

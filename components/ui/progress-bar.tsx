@@ -17,7 +17,7 @@ export function ProgressBar({
     <div className={`flex items-center gap-4 w-full ${className}`}>
       <div className="flex-1 h-2 bg-[#F1F5F9] rounded-full overflow-hidden border border-[#E2E8F0]/50">
         <div
-          className="h-full bg-[#F97316] rounded-full transition-all duration-300 ease-out"
+          className="h-full bg-[#4F46E5] rounded-full transition-all duration-300 ease-out"
           style={{ width: `${clampedValue}%` }}
         />
       </div>

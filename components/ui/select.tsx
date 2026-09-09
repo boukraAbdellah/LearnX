@@ -25,7 +25,7 @@ export function Select({
         defaultValue={defaultValue}
         value={value}
         onChange={onChange}
-        className={`w-full h-[44px] pl-4 pr-10 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] font-medium appearance-none cursor-pointer outline-none transition-colors focus:border-[#FB923C] focus:ring-2 focus:ring-[#FED7AA]/50 ${className}`}
+        className={`w-full h-[44px] pl-4 pr-10 bg-white border border-[#E2E8F0] rounded-[12px] text-[14px] text-[#0F172A] font-medium appearance-none cursor-pointer outline-none transition-colors focus:border-[#6366F1] focus:ring-2 focus:ring-[#A5B4FC]/50 ${className}`}
         {...props}
       >
         {options.map((opt) => (
