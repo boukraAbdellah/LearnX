@@ -25,8 +25,17 @@ export const COURSES_QUERY = defineQuery(`
     popular,
     "isPopular": coalesce(popular, false),
     studentCount,
+    "modulesCount": count(modules),
     "category": category->{ title, "slug": slug.current },
-    "instructor": instructor->{ name, "slug": slug.current, photo }
+    "instructor": instructor->{ name, "slug": slug.current, photo },
+    "modules": modules[]{
+      _key,
+      title,
+      "lessons": lessons[]->{
+        _id,
+        duration
+      }
+    }
   }
 `)
 

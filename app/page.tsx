@@ -1,39 +1,63 @@
-"use client";
-
-import React, { useRef, useEffect, useState } from "react";
-import Image from "next/image";
+import React from "react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import {
   Navigation,
   CourseCard,
-  SearchIcon,
   StarIcon,
   BottomBars,
 } from "@/components/ui";
+import { HeroSearchBar } from "@/components/home/HeroSearchBar";
+import { CourseIcon } from "@/components/home/CourseIcon";
+import { getCourses } from "@/sanity/lib/fetch";
+import type { SanityImageSource } from "@sanity/image-url";
 
-export default function HomePage() {
-  const router = useRouter();
-  const searchInputRef = useRef<HTMLInputElement>(null);
-  const [searchQuery, setSearchQuery] = useState("");
+interface LessonSummary {
+  _id: string;
+  duration: number | null;
+}
 
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.metaKey || e.ctrlKey) && e.key === "k") {
-        e.preventDefault();
-        searchInputRef.current?.focus();
-      }
-    };
-    window.addEventListener("keydown", handleKeyDown);
-    return () => window.removeEventListener("keydown", handleKeyDown);
-  }, []);
+interface ModuleSummary {
+  _key: string;
+  title: string | null;
+  lessons: LessonSummary[] | null;
+}
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (searchQuery.trim()) {
-      router.push(`/courses?q=${encodeURIComponent(searchQuery.trim())}`);
-    }
-  };
+interface CourseListing {
+  _id: string;
+  title: string | null;
+  slug: string | null;
+  summary: string | null;
+  coverImage?: SanityImageSource | null;
+  level: string | null;
+  price: number | null;
+  popular: boolean;
+  studentCount: number | null;
+  modulesCount?: number | null;
+  modules?: ModuleSummary[] | null;
+}
+
+/** Format a duration in seconds to "1h 24m" or "45m". */
+function formatSeconds(totalSeconds: number | null | undefined): string {
+  if (!totalSeconds || totalSeconds <= 0) return "";
+  const h = Math.floor(totalSeconds / 3600);
+  const m = Math.floor((totalSeconds % 3600) / 60);
+  if (h === 0) return `${m}m`;
+  if (m === 0) return `${h}h`;
+  return `${h}h ${m}m`;
+}
+
+/** Sum lesson durations (in seconds) across all modules and format. */
+function computeTotalDuration(modules: ModuleSummary[] | null | undefined): string {
+  if (!modules) return "";
+  const total = modules.reduce((acc, mod) => {
+    return acc + (mod.lessons ?? []).reduce((a, l) => a + (l?.duration ?? 0), 0);
+  }, 0);
+  return formatSeconds(total);
+}
+
+export default async function HomePage() {
+  const rawCourses = await getCourses();
+  const courses = (rawCourses as CourseListing[] | null) ?? [];
 
   return (
     <div
@@ -45,7 +69,6 @@ export default function HomePage() {
     >
       {/* Central Framed Layout matching vertex-home.png desktop view */}
       <div className="w-full max-w-[1024px] min-h-screen bg-[#FAF7F5] border-x border-[#EDE5DF] shadow-xs flex flex-col justify-between relative">
-        
         {/* Top Header Navigation */}
         <header className="w-full">
           <Navigation activeTab="courses" showActions={true} avatarSrc="/avatar.png" />
@@ -97,27 +120,7 @@ export default function HomePage() {
             </Link>
 
             {/* Search Bar */}
-            <div className="w-full max-w-[620px] mx-auto">
-              <form
-                onSubmit={handleSearchSubmit}
-                className="w-full relative flex items-center bg-white border border-[#E2E8F0] rounded-[14px] px-4 py-3 shadow-xs hover:border-[#CBD5E1] focus-within:border-[#6366F1] focus-within:ring-2 focus-within:ring-[#6366F1]/20 transition-all duration-150 cursor-text"
-                onClick={() => searchInputRef.current?.focus()}
-              >
-                <SearchIcon size={19} className="text-[#94A3B8] shrink-0 mr-3" />
-                <input
-                  ref={searchInputRef}
-                  type="text"
-                  value={searchQuery}
-                  onChange={(e) => setSearchQuery(e.target.value)}
-                  placeholder="Ask anything about your learning..."
-                  className="w-full bg-transparent text-[14.5px] text-[#0F172A] placeholder-[#94A3B8] focus:outline-none"
-                  aria-label="Ask anything about your learning"
-                />
-                <kbd className="hidden sm:inline-flex items-center justify-center px-2 py-0.5 rounded-[6px] bg-[#F8FAFC] border border-[#E2E8F0] text-[#64748B] text-[11.5px] font-medium tracking-tight shadow-2xs select-none ml-2">
-                  ⌘ K
-                </kbd>
-              </form>
-            </div>
+            <HeroSearchBar />
           </section>
 
           {/* Section Divider Line */}
@@ -153,62 +156,38 @@ export default function HomePage() {
 
             {/* Courses Grid */}
             <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {/* Course 1: Next.js */}
-              <CourseCard
-                title="Next.js for Production"
-                description="Build scalable, high-performance web applications with Next.js."
-                level="Intermediate"
-                duration="18h 24m"
-                modulesCount={12}
-                icon={
-                  <div className="w-11 h-11 rounded-[10px] bg-black text-white flex items-center justify-center font-bold text-[19px] select-none">
-                    N
-                  </div>
-                }
-                onClick={() => {
-                  router.push("/courses/nextjs-for-production");
-                }}
-              />
+              {courses.map((course) => {
+                const totalDuration = computeTotalDuration(course.modules) || "Self-paced";
+                const modulesCount =
+                  course.modulesCount ?? course.modules?.length ?? 0;
+                const formattedLevel = course.level
+                  ? course.level.charAt(0).toUpperCase() + course.level.slice(1)
+                  : "All Levels";
 
-              {/* Course 2: Docker Essentials */}
-              <CourseCard
-                title="Docker Essentials"
-                description="Containerize applications and streamline your development workflow."
-                level="Beginner"
-                duration="10h 12m"
-                modulesCount={8}
-                icon={
-                  <div className="w-12 h-11 flex items-center justify-center">
-                    <Image
-                      src="/docker-icon.png"
-                      alt="Docker whale icon"
-                      width={52}
-                      height={42}
-                      className="object-contain"
+                return (
+                  <Link
+                    key={course._id}
+                    href={`/courses/${course.slug}`}
+                    className="block h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1] rounded-[16px]"
+                  >
+                    <CourseCard
+                      title={course.title ?? "Untitled Course"}
+                      description={course.summary ?? ""}
+                      level={formattedLevel}
+                      duration={totalDuration}
+                      modulesCount={modulesCount}
+                      icon={
+                        <CourseIcon
+                          slug={course.slug ?? ""}
+                          title={course.title ?? ""}
+                          coverImage={course.coverImage}
+                        />
+                      }
+                      className="h-full"
                     />
-                  </div>
-                }
-                onClick={() => {
-                  router.push("/courses/docker-essentials");
-                }}
-              />
-
-              {/* Course 3: TypeScript Deep Dive */}
-              <CourseCard
-                title="TypeScript Deep Dive"
-                description="Go beyond the basics and write safer, more expressive code."
-                level="Intermediate"
-                duration="14h 36m"
-                modulesCount={10}
-                icon={
-                  <div className="w-11 h-11 rounded-[10px] bg-[#3178C6] text-white flex items-center justify-center font-bold text-[17px] tracking-tight select-none">
-                    TS
-                  </div>
-                }
-                onClick={() => {
-                  router.push("/courses/typescript-deep-dive");
-                }}
-              />
+                  </Link>
+                );
+              })}
             </div>
 
             {/* Weekly Updates Divider */}
