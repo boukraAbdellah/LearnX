@@ -129,13 +129,17 @@ export const LESSON_COURSE_QUERY = defineQuery(`
     _id,
     title,
     "slug": slug.current,
+    coverImage,
+    level,
     "modules": modules[]{
       _key,
       title,
+      summary,
       "lessons": lessons[]->{
         _id,
         title,
         "slug": slug.current,
+        duration,
         freePreview,
         "isFreePreview": coalesce(freePreview, false)
       }

@@ -164,7 +164,7 @@ export default async function CoursePage({
       }}
     >
       {/* Central Framed Layout matching vertex-home.png desktop view */}
-      <div className="w-full max-w-[1024px] min-h-screen bg-[#FAF7F5] border-x border-[#EDE5DF] shadow-xs flex flex-col relative pb-20">
+      <div className="w-full max-w-[1024px] min-h-screen bg-[#FAF7F5] border-x border-[#EDE5DF] shadow-xs flex flex-col relative pb-28 sm:pb-24">
         {/* Top Header Navigation */}
         <header className="w-full">
           <Navigation activeTab="courses" showActions />
@@ -220,7 +220,11 @@ export default async function CoursePage({
       </div>
 
       {/* Sticky Bottom Progress Bar */}
-      <CourseProgressBar progress={35} continuePath={continuePath} />
+      <CourseProgressBar
+        progress={35}
+        continuePath={continuePath}
+        totalLessons={totalLessons}
+      />
     </div>
   );
 }
