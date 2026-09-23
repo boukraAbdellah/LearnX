@@ -38,6 +38,7 @@ yarn-error.log*
 .vercel
 /.agents
 /AGENTS.md
+/scratch
 
 # Studio workspace
 /studio/node_modules

@@ -9,13 +9,18 @@
     "lint": "eslint"
   },
   "dependencies": {
+    "@ai-sdk/google": "^4.0.77",
+    "@ai-sdk/mcp": "^2.0.55",
+    "@ai-sdk/react": "^4.0.114",
     "@clerk/nextjs": "^7.9.1",
     "@sanity/image-url": "^2.1.1",
     "@sanity/vision": "^5.31.2",
+    "ai": "^7.0.111",
     "next": "16.3.4",
     "next-sanity": "^13.3.4",
     "react": "19.2.8",
     "react-dom": "19.2.8",
+    "react-markdown": "^10.1.0",
     "sanity": "^5.31.2",
     "styled-components": "^6.5.3"
   },
