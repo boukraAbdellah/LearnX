@@ -15,9 +15,9 @@ const playfair = Playfair_Display({
 });
 
 export const metadata: Metadata = {
-  title: "Vertex - Design System",
+  title: "LearnX - AI-Powered Learning Platform",
   description:
-    "A unified design language for Vertex learning platform. Clean, modern and focused on clarity, consistency and intuitive learning experiences.",
+    "LearnX is an intelligent learning platform with instant video search to the exact second in every lesson.",
 };
 
 export default function RootLayout({

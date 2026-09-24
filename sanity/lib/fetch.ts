@@ -18,7 +18,9 @@ import {
   LESSON_BY_SLUG_QUERY,
   LESSON_COURSE_QUERY,
   LESSON_SLUGS_QUERY,
+  USER_PROGRESS_QUERY,
 } from './queries'
+
 
 // ─── Catalog ─────────────────────────────────────────────────────────────────
 
@@ -115,3 +117,18 @@ export async function getCoursesByCategory(categorySlug: string) {
   })
   return data
 }
+
+// ─── Progress ─────────────────────────────────────────────────────────────────
+
+/**
+ * Returns learner progress for a given Clerk userId.
+ * Returns null if not found.
+ */
+export async function getUserProgress(userId: string) {
+  const { data } = await sanityFetch({
+    query: USER_PROGRESS_QUERY,
+    params: { userId },
+  })
+  return data
+}
+

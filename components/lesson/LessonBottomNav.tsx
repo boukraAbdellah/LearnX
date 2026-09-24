@@ -1,8 +1,10 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
+
 import Link from "next/link";
-import { ChevronLeftIcon, ChevronRightIcon } from "@/components/ui/icons";
+import { useRouter } from "next/navigation";
+import { ChevronLeftIcon, ChevronRightIcon, CheckCircleIcon, CheckIcon } from "@/components/ui/icons";
 
 export interface NavLessonTarget {
   title: string;
@@ -14,6 +16,9 @@ interface LessonBottomNavProps {
   previousLesson?: NavLessonTarget | null;
   nextLesson?: NavLessonTarget | null;
   courseSlug: string;
+  lessonId?: string;
+  courseId?: string;
+  initialCompleted?: boolean;
 }
 
 /** Format seconds to "1h 24m" or "45m" */
@@ -30,7 +35,45 @@ export function LessonBottomNav({
   previousLesson,
   nextLesson,
   courseSlug,
+  lessonId,
+  courseId,
+  initialCompleted = false,
 }: LessonBottomNavProps) {
+  const router = useRouter();
+  const [completed, setCompleted] = useState(initialCompleted);
+  const [isUpdating, setIsUpdating] = useState(false);
+
+  const handleToggleComplete = async () => {
+    if (!lessonId || isUpdating) return;
+    const nextCompleted = !completed;
+    setCompleted(nextCompleted);
+    setIsUpdating(true);
+
+    try {
+      const res = await fetch("/api/progress", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          lessonId,
+          courseId,
+          completed: nextCompleted,
+        }),
+      });
+
+      if (!res.ok) {
+        // Revert on error
+        setCompleted(!nextCompleted);
+      } else {
+        router.refresh();
+      }
+    } catch (err) {
+      console.error("Failed to update progress:", err);
+      setCompleted(!nextCompleted);
+    } finally {
+      setIsUpdating(false);
+    }
+  };
+
   return (
     <nav
       aria-label="Lesson navigation"
@@ -74,8 +117,37 @@ export function LessonBottomNav({
         )}
       </div>
 
+      {/* Completion Toggle Button */}
+      {lessonId && (
+        <div className="flex items-center justify-center order-first sm:order-none w-full sm:w-auto">
+          <button
+            type="button"
+            onClick={handleToggleComplete}
+            disabled={isUpdating}
+            className={`inline-flex items-center gap-2 px-5 py-2.5 rounded-xl text-xs font-semibold transition-all cursor-pointer shadow-2xs ${
+              completed
+                ? "bg-emerald-50 text-emerald-700 border border-emerald-200/80 hover:bg-emerald-100/70"
+                : "bg-white text-neutral-700 border border-[#EDE5DF] hover:border-primary-300 hover:text-primary-600 hover:bg-primary-50/30"
+            }`}
+          >
+            {completed ? (
+              <>
+                <CheckCircleIcon size={16} className="text-emerald-600 shrink-0" />
+                <span>Completed</span>
+              </>
+            ) : (
+              <>
+                <CheckIcon size={16} className="text-neutral-400 shrink-0" />
+                <span>Mark as Complete</span>
+              </>
+            )}
+          </button>
+        </div>
+      )}
+
       {/* Next Lesson Link */}
       <div className="w-full sm:w-auto flex items-center justify-end">
+
         {nextLesson ? (
           <Link
             href={`/lessons/${nextLesson.slug}`}

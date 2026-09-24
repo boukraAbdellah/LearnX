@@ -31,4 +31,12 @@ export const structure: StructureResolver = (S) =>
         .title('Categories')
         .schemaType('category')
         .child(S.documentTypeList('category').title('All Categories')),
+
+      S.divider(),
+
+      // ── Video Intelligence ───────────────────────────────────────────────────
+      S.listItem()
+        .title('Video Intelligence')
+        .schemaType('video')
+        .child(S.documentTypeList('video').title('Video Documents')),
     ])

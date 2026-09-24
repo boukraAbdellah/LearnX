@@ -22,3 +22,14 @@ export const serverClient = client.withConfig({
   token: process.env.SANITY_API_READ_TOKEN,
   useCdn: false,
 })
+
+/**
+ * Server-only write client — uses editor/write token for progress and data mutations.
+ * Import ONLY inside API routes or server actions.
+ * NEVER expose to the browser.
+ */
+export const writeClient = client.withConfig({
+  token: process.env.SANITY_API_WRITE_TOKEN || process.env.SANITY_API_READ_TOKEN,
+  useCdn: false,
+})
+

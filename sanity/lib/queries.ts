@@ -199,3 +199,33 @@ export const COURSES_BY_CATEGORY_QUERY = defineQuery(`
     "instructor": instructor->{ name, photo }
   }
 `)
+
+// ─── Progress ─────────────────────────────────────────────────────────────────
+
+/**
+ * Learner progress document by Clerk userId.
+ * Used by course detail, lesson page, and My Learning page.
+ */
+export const USER_PROGRESS_QUERY = defineQuery(`
+  *[_type == "progress" && userId == $userId][0]{
+    _id,
+    userId,
+    "completedLessons": completedLessons[]->{
+      _id,
+      "slug": slug.current,
+      title
+    },
+    "completedLessonIds": completedLessons[]._ref,
+    courseProgress[]{
+      _key,
+      "courseId": course._ref,
+      "courseSlug": course->slug.current,
+      "lastLessonId": lastLesson._ref,
+      "lastLessonSlug": lastLesson->slug.current,
+      "lastLessonTitle": lastLesson->title,
+      lastPositionSeconds,
+      updatedAt
+    }
+  }
+`)
+

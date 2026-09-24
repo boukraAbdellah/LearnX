@@ -7,10 +7,12 @@ import { CourseOutcomes } from "@/components/course/CourseOutcomes";
 import { CourseModuleList } from "@/components/course/CourseModuleList";
 import { CourseProgressBar } from "@/components/course/CourseProgressBar";
 import { CourseInstructor } from "@/components/course/CourseInstructor";
-import { getCourseBySlug } from "@/sanity/lib/fetch";
+import { getCourseBySlug, getUserProgress } from "@/sanity/lib/fetch";
 import { serverClient } from "@/sanity/lib/client";
 import { COURSE_SLUGS_QUERY } from "@/sanity/lib/queries";
+import { auth } from "@clerk/nextjs/server";
 import type { SanityImageSource } from "@sanity/image-url";
+
 
 // ─── Local types matching COURSE_BY_SLUG_QUERY projection ────────────────────
 
@@ -147,13 +149,49 @@ export default async function CoursePage({
   );
 
   const firstLessonSlug = modules[0]?.lessons?.[0]?.slug ?? null;
-  const continuePath = firstLessonSlug
-    ? `/lessons/${firstLessonSlug}`
-    : `/courses/${slug}`;
+  const { userId } = await auth();
+  const userProgressData = userId ? await getUserProgress(userId) : null;
+
+  interface UserProgressData {
+    completedLessonIds?: string[] | null;
+    courseProgress?: Array<{
+      courseId?: string;
+      courseSlug?: string;
+      lastLessonSlug?: string;
+      lastPositionSeconds?: number;
+    }> | null;
+  }
+
+  const progressRecord = (userProgressData as UserProgressData) || null;
+  const completedIds = new Set(progressRecord?.completedLessonIds || []);
+
+  const allLessons = modules.flatMap((m) => m.lessons ?? []);
+  const completedInCourse = allLessons.filter((l) => completedIds.has(l._id));
+  const realProgressPercent =
+    totalLessons > 0 ? Math.round((completedInCourse.length / totalLessons) * 100) : 0;
+
+  const courseResume = progressRecord?.courseProgress?.find(
+    (cp) => cp.courseId === course._id || cp.courseSlug === slug
+  );
+
+  let continuePath = `/courses/${slug}`;
+  if (courseResume?.lastLessonSlug) {
+    continuePath = `/lessons/${courseResume.lastLessonSlug}${
+      courseResume.lastPositionSeconds ? `?start=${courseResume.lastPositionSeconds}` : ""
+    }`;
+  } else {
+    const nextUncompleted = allLessons.find((l) => !completedIds.has(l._id)) || allLessons[0];
+    if (nextUncompleted?.slug) {
+      continuePath = `/lessons/${nextUncompleted.slug}`;
+    } else if (firstLessonSlug) {
+      continuePath = `/lessons/${firstLessonSlug}`;
+    }
+  }
 
   const outcomes: LearningOutcome[] = (course.learningOutcomes ?? []).filter(
     (o): o is LearningOutcome => !!o
   );
+
 
   return (
     <div
@@ -210,7 +248,9 @@ export default async function CoursePage({
             modules={modules}
             courseSlug={slug}
             totalDuration={totalDuration || null}
+            completedLessonIds={Array.from(completedIds)}
           />
+
         )}
 
         {/* Instructor Spotlight */}
@@ -221,10 +261,11 @@ export default async function CoursePage({
 
       {/* Sticky Bottom Progress Bar */}
       <CourseProgressBar
-        progress={35}
+        progress={realProgressPercent}
         continuePath={continuePath}
         totalLessons={totalLessons}
       />
+
     </div>
   );
 }

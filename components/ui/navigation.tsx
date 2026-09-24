@@ -3,7 +3,7 @@
 import React from "react";
 import Link from "next/link";
 import { SignInButton, SignUpButton, Show, UserButton } from "@clerk/nextjs";
-import { VertexLogo, BellIcon } from "./icons";
+import { LearnXLogo, BellIcon } from "./icons";
 
 export interface NavigationProps {
   activeTab?: "courses" | "my-learning" | string;
@@ -25,9 +25,9 @@ export function Navigation({
     >
       <div className="flex items-center gap-8 md:gap-12">
         <Link href="/" className="flex items-center gap-2.5 group">
-          <VertexLogo size={28} />
+          <LearnXLogo size={28} />
           <span className="font-serif font-bold text-[22px] tracking-tight text-[#0F172A] group-hover:text-[#4F46E5] transition-colors">
-            Vertex
+            Learn<span className="text-[#4F46E5] group-hover:text-[#4338CA] transition-colors">X</span>
           </span>
         </Link>
         <div className="flex items-center gap-6 text-[14px] font-medium">

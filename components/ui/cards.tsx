@@ -1,4 +1,5 @@
 import React from "react";
+import Image from "next/image";
 import { Badge } from "./badge";
 import {
   BarChartIcon,
@@ -15,6 +16,8 @@ export interface CourseCardProps {
   duration: string;
   modulesCount: number;
   icon?: React.ReactNode;
+  coverImage?: string | null;
+  popular?: boolean;
   className?: string;
   onClick?: () => void;
 }
@@ -26,6 +29,8 @@ export function CourseCard({
   duration = "18h 24m",
   modulesCount = 12,
   icon,
+  coverImage,
+  popular,
   className = "",
   onClick,
 }: CourseCardProps) {
@@ -35,11 +40,28 @@ export function CourseCard({
       className={`bg-white border border-[#EDE5DF] rounded-[16px] p-5 sm:p-6 shadow-xs hover:shadow-md transition-all duration-200 flex flex-col justify-between cursor-pointer group ${className}`}
     >
       <div className="flex-1 flex flex-col">
-        <div className="mb-4 flex items-center">
-          {icon ?? (
+        <div className="mb-4 flex items-center justify-between">
+          {coverImage ? (
+            <div className="w-11 h-11 rounded-[10px] overflow-hidden border border-[#EDE5DF] relative shrink-0 shadow-2xs">
+              <Image
+                src={coverImage}
+                alt={title}
+                fill
+                className="object-cover group-hover:scale-105 transition-transform duration-200"
+                sizes="44px"
+              />
+            </div>
+          ) : icon ? (
+            icon
+          ) : (
             <div className="w-11 h-11 rounded-[10px] bg-black text-white flex items-center justify-center font-bold text-[19px]">
               N
             </div>
+          )}
+          {popular && (
+            <span className="px-2.5 py-0.5 rounded-full text-[10.5px] font-semibold tracking-wide uppercase bg-[#EEF2FF] text-[#4338CA] border border-[#A5B4FC]/60">
+              Popular
+            </span>
           )}
         </div>
         <h3 className="font-serif font-bold text-[17px] text-[#0F172A] leading-snug mb-2 group-hover:text-[#4F46E5] transition-colors">

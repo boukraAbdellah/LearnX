@@ -8,6 +8,7 @@ import {
   EyeIcon,
   ClockIcon,
   PlayCircleIcon,
+  CheckCircleIcon,
 } from "@/components/ui/icons";
 
 export interface LessonStub {
@@ -30,7 +31,9 @@ interface CourseModuleListProps {
   modules: CourseModule[];
   courseSlug: string;
   totalDuration?: string | null;
+  completedLessonIds?: string[];
 }
+
 
 const INITIAL_VISIBLE = 8;
 
@@ -55,7 +58,9 @@ export function CourseModuleList({
   modules,
   courseSlug,
   totalDuration,
+  completedLessonIds,
 }: CourseModuleListProps) {
+
   const [showAll, setShowAll] = useState(false);
   // Default first module expanded for immediate preview
   const [expandedKeys, setExpandedKeys] = useState<Set<string>>(
@@ -195,6 +200,8 @@ export function CourseModuleList({
                       ? `/lessons/${lesson.slug}`
                       : `/courses/${courseSlug}`;
 
+                    const isCompleted = completedLessonIds?.includes(lesson._id);
+
                     return (
                       <li key={lesson._id}>
                         <Link
@@ -203,7 +210,11 @@ export function CourseModuleList({
                         >
                           <div className="flex items-center gap-3.5 min-w-0 flex-1">
                             {/* Icon Indicator */}
-                            {lesson.isFreePreview ? (
+                            {isCompleted ? (
+                              <div className="w-6 h-6 rounded-full bg-emerald-100 text-emerald-600 flex items-center justify-center shrink-0">
+                                <CheckCircleIcon size={14} />
+                              </div>
+                            ) : lesson.isFreePreview ? (
                               <div className="w-6 h-6 rounded-full bg-primary-100 text-primary-600 flex items-center justify-center shrink-0 group-hover/lesson:scale-110 transition-transform">
                                 <PlayCircleIcon size={14} />
                               </div>
@@ -212,6 +223,7 @@ export function CourseModuleList({
                                 <LockIcon size={12} />
                               </div>
                             )}
+
 
                             {/* Lesson Title */}
                             <span

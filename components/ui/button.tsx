@@ -25,7 +25,7 @@ export function Button({
 }: ButtonProps) {
   // Base classes: 44px height, 12px radius, Inter Medium font, transition
   const baseClasses =
-    "inline-flex items-center justify-center font-medium rounded-[12px] h-[44px] transition-all duration-150 select-none cursor-pointer disabled:cursor-not-allowed text-[14px]";
+    "inline-flex items-center justify-center gap-2 font-medium rounded-[12px] h-[44px] transition-all duration-150 select-none cursor-pointer disabled:cursor-not-allowed text-[14px] [&>svg]:shrink-0";
 
   const sizeClasses = size === "lg" ? "px-4" : "px-3";
 
@@ -79,9 +79,17 @@ export function Button({
       className={`${baseClasses} ${sizeClasses} ${variantClasses} ${className}`}
       {...props}
     >
-      {icon && iconPosition === "left" && <span className="mr-2 inline-flex">{icon}</span>}
-      <span>{children}</span>
-      {icon && iconPosition === "right" && <span className="ml-2 inline-flex">{icon}</span>}
+      {icon && iconPosition === "left" && (
+        <span className="inline-flex shrink-0 items-center justify-center">
+          {icon}
+        </span>
+      )}
+      {children}
+      {icon && iconPosition === "right" && (
+        <span className="inline-flex shrink-0 items-center justify-center">
+          {icon}
+        </span>
+      )}
     </button>
   );
 }

@@ -1,6 +1,5 @@
 import React from "react";
 import Image from "next/image";
-import Link from "next/link";
 import { urlFor } from "@/sanity/lib/image";
 import type { SanityImageSource } from "@sanity/image-url";
 import { UserIcon } from "@/components/ui/icons";
@@ -62,14 +61,14 @@ export function CourseInstructor({ instructor }: InstructorProps) {
               <h3 className="text-lg font-bold text-neutral-900">
                 {instructor.name}
               </h3>
-              {instructor.slug && (
+              {/* {instructor.slug && (
                 <Link
                   href={`/instructors/${instructor.slug}`}
                   className="text-xs font-semibold text-primary-600 hover:text-primary-700 transition-colors"
                 >
                   View profile →
                 </Link>
-              )}
+              )} */}
             </div>
 
             {/* Expertise Tags */}

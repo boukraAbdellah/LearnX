@@ -6,10 +6,12 @@ import { LessonHeader, type BreadcrumbItem } from "@/components/lesson/LessonHea
 import { LessonVideoEmbed } from "@/components/lesson/LessonVideoEmbed";
 import { LessonTabs } from "@/components/lesson/LessonTabs";
 import { LessonBottomNav, type NavLessonTarget } from "@/components/lesson/LessonBottomNav";
-import { getLessonBySlug, getLessonCourse } from "@/sanity/lib/fetch";
+import { getLessonBySlug, getLessonCourse, getUserProgress } from "@/sanity/lib/fetch";
 import { serverClient } from "@/sanity/lib/client";
 import { LESSON_SLUGS_QUERY } from "@/sanity/lib/queries";
+import { auth } from "@clerk/nextjs/server";
 import type { SanityImageSource } from "@sanity/image-url";
+
 import type { PortableTextBlock } from "next-sanity";
 
 // ─── Local Types ─────────────────────────────────────────────────────────────
@@ -123,6 +125,15 @@ export default async function LessonPage({
   const rawCourse = await getLessonCourse(lesson._id);
   const course = rawCourse as ParentCourseData | null;
 
+  const { userId } = await auth();
+  const userProgressData = userId ? await getUserProgress(userId) : null;
+
+  interface UserProgressData {
+    completedLessonIds?: string[] | null;
+  }
+  const progressRecord = (userProgressData as UserProgressData) || null;
+  const completedIds = new Set(progressRecord?.completedLessonIds || []);
+
   const modules: SidebarModule[] = (course?.modules ?? []).map((mod) => ({
     _key: mod._key,
     title: mod.title ?? "Module",
@@ -133,8 +144,17 @@ export default async function LessonPage({
       slug: l.slug ?? null,
       duration: typeof l.duration === "number" ? l.duration : null,
       isFreePreview: l.isFreePreview ?? false,
+      isCompleted: completedIds.has(l._id),
     })),
   }));
+
+  const allCourseLessons = modules.flatMap((m) => m.lessons ?? []);
+  const completedInCourse = allCourseLessons.filter((l) => l.isCompleted);
+  const realProgressPercent =
+    allCourseLessons.length > 0
+      ? Math.round((completedInCourse.length / allCourseLessons.length) * 100)
+      : 0;
+
 
   // Derive module & lesson numbering (e.g. Lesson 5.1 in Data Fetching & Caching)
   let moduleNumber = 1;
@@ -245,8 +265,9 @@ export default async function LessonPage({
               currentLessonSlug={slug}
               currentModuleKey={activeModuleKey}
               modules={modules}
-              progressPercent={35}
+              progressPercent={realProgressPercent}
             />
+
           )}
 
           {/* Right Main Lesson Area */}
@@ -289,12 +310,16 @@ export default async function LessonPage({
               />
             </div>
 
-            {/* Bottom Lesson Navigation (Previous & Next Lesson) */}
+            {/* Bottom Lesson Navigation (Previous, Next, and Mark Complete) */}
             <LessonBottomNav
               previousLesson={previousLesson}
               nextLesson={nextLesson}
               courseSlug={course?.slug ?? "courses"}
+              lessonId={lesson._id}
+              courseId={course?._id}
+              initialCompleted={completedIds.has(lesson._id)}
             />
+
           </main>
         </div>
       </div>

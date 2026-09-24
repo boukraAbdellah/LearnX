@@ -2,13 +2,13 @@ import React from "react";
 import Link from "next/link";
 import {
   Navigation,
-  CourseCard,
   StarIcon,
   BottomBars,
 } from "@/components/ui";
 import { HeroSearchBar } from "@/components/home/HeroSearchBar";
-import { CourseIcon } from "@/components/home/CourseIcon";
+import { PopularCoursesSlider, type PopularCourse } from "@/components/home/PopularCoursesSlider";
 import { getCourses } from "@/sanity/lib/fetch";
+import { getCourseCoverImageUrl } from "@/sanity/lib/image";
 import type { SanityImageSource } from "@sanity/image-url";
 
 interface LessonSummary {
@@ -57,7 +57,22 @@ function computeTotalDuration(modules: ModuleSummary[] | null | undefined): stri
 
 export default async function HomePage() {
   const rawCourses = await getCourses();
-  const courses = (rawCourses as CourseListing[] | null) ?? [];
+  const allCourses = (rawCourses as CourseListing[] | null) ?? [];
+  const popularCourses = allCourses.filter((course) => Boolean(course.popular));
+  const courses = popularCourses.length > 0 ? popularCourses : allCourses;
+
+  const sliderCourses: PopularCourse[] = courses.map((course) => ({
+    _id: course._id,
+    title: course.title,
+    slug: course.slug,
+    summary: course.summary,
+    level: course.level
+      ? course.level.charAt(0).toUpperCase() + course.level.slice(1)
+      : "All Levels",
+    duration: computeTotalDuration(course.modules) || "Self-paced",
+    modulesCount: course.modulesCount ?? course.modules?.length ?? 0,
+    coverImageUrl: getCourseCoverImageUrl(course.coverImage),
+  }));
 
   return (
     <div
@@ -92,7 +107,7 @@ export default async function HomePage() {
 
             {/* Subtitle */}
             <p className="font-sans text-[15px] md:text-[16.5px] text-[#64748B] leading-relaxed max-w-xl mx-auto mb-9 font-normal">
-              Vertex understands what you want to learn and
+              LearnX understands what you want to learn and
               <br className="hidden sm:inline" />
               finds the exact lessons across all your courses.
             </p>
@@ -126,12 +141,17 @@ export default async function HomePage() {
           {/* Section Divider Line */}
           <div className="w-full h-px bg-[#EDE5DF]" />
 
-          {/* All Courses Section */}
+          {/* Popular Courses Section */}
           <section className="pt-10 pb-8 px-6 lg:px-8">
             <div className="flex items-center justify-between mb-7">
-              <h2 className="font-serif font-bold text-[24px] md:text-[26px] text-[#0F172A] tracking-tight">
-                All Courses
-              </h2>
+              <div className="flex items-center gap-2.5">
+                <h2 className="font-serif font-bold text-[24px] md:text-[26px] text-[#0F172A] tracking-tight">
+                  Popular Courses
+                </h2>
+                <span className="hidden sm:inline-flex px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wide uppercase bg-[#EEF2FF] text-[#4338CA] border border-[#A5B4FC]/60">
+                  Featured
+                </span>
+              </div>
               <Link
                 href="/courses"
                 className="inline-flex items-center gap-1.5 text-[14px] font-medium text-[#4F46E5] hover:text-[#4338CA] transition-colors group"
@@ -154,41 +174,8 @@ export default async function HomePage() {
               </Link>
             </div>
 
-            {/* Courses Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-5">
-              {courses.map((course) => {
-                const totalDuration = computeTotalDuration(course.modules) || "Self-paced";
-                const modulesCount =
-                  course.modulesCount ?? course.modules?.length ?? 0;
-                const formattedLevel = course.level
-                  ? course.level.charAt(0).toUpperCase() + course.level.slice(1)
-                  : "All Levels";
-
-                return (
-                  <Link
-                    key={course._id}
-                    href={`/courses/${course.slug}`}
-                    className="block h-full group focus:outline-none focus-visible:ring-2 focus-visible:ring-[#6366F1] rounded-[16px]"
-                  >
-                    <CourseCard
-                      title={course.title ?? "Untitled Course"}
-                      description={course.summary ?? ""}
-                      level={formattedLevel}
-                      duration={totalDuration}
-                      modulesCount={modulesCount}
-                      icon={
-                        <CourseIcon
-                          slug={course.slug ?? ""}
-                          title={course.title ?? ""}
-                          coverImage={course.coverImage}
-                        />
-                      }
-                      className="h-full"
-                    />
-                  </Link>
-                );
-              })}
-            </div>
+            {/* Popular Courses Slider (Without Arrows, Smooth Motion, Cover Images) */}
+            <PopularCoursesSlider courses={sliderCourses} />
 
             {/* Weekly Updates Divider */}
             <div className="flex items-center justify-center gap-3.5 mt-14 mb-4">

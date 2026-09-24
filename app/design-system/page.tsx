@@ -2,7 +2,7 @@
 
 import React, { useState } from "react";
 import {
-  VertexLogo,
+  LearnXLogo,
   BellIcon,
   BellFilledIcon,
   SearchIcon,
@@ -92,16 +92,16 @@ export default function DesignSystemPage() {
         {/* Title Header */}
         <header className="border-b border-[#E2E8F0] pb-10">
           <div className="flex items-center gap-3 mb-4">
-            <VertexLogo size={36} />
+            <LearnXLogo size={36} />
             <span className="font-serif font-bold text-[24px] tracking-tight text-[#0F172A]">
-              Vertex
+              Learn<span className="text-[#4F46E5]">X</span>
             </span>
           </div>
           <h1 className="font-serif text-5xl font-bold text-[#0F172A] mb-3">
             Design System
           </h1>
           <p className="text-[#64748B] text-[16px] max-w-2xl leading-relaxed">
-            A unified design language for Vertex learning platform. Clean, modern and focused on clarity, consistency and intuitive learning experiences.
+            A unified design language for LearnX learning platform. Clean, modern and focused on clarity, consistency and intuitive learning experiences.
           </p>
           <div className="mt-4 text-[12px] font-semibold text-[#64748B] tracking-wider uppercase">
             VERSION 1.0 • MAY 2025

@@ -20,7 +20,9 @@ export interface SidebarLesson {
   slug: string | null;
   duration?: number | null;
   isFreePreview?: boolean;
+  isCompleted?: boolean;
 }
+
 
 export interface SidebarModule {
   _key: string;
@@ -260,12 +262,17 @@ export function LessonSidebar({
                           }`}
                         >
                           <div className="flex items-center gap-2.5 min-w-0 flex-1">
-                            {/* Marker dot */}
+                            {/* Marker dot or completion checkmark */}
                             {isPlaying ? (
                               <div className="w-2 h-2 rounded-full bg-primary-600 shrink-0 ring-4 ring-primary-100" />
+                            ) : lesson.isCompleted ? (
+                              <div className="text-emerald-600 shrink-0">
+                                <CheckCircleIcon size={14} />
+                              </div>
                             ) : (
                               <div className="w-2 h-2 rounded-full border border-neutral-300 shrink-0" />
                             )}
+
 
                             <div className="min-w-0 flex-1">
                               <p

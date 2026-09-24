@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import { urlFor } from "@/sanity/lib/image";
+import { getCourseCoverImageUrl } from "@/sanity/lib/image";
 import type { SanityImageSource } from "@sanity/image-url";
 
 interface CourseIconProps {
@@ -9,17 +9,22 @@ interface CourseIconProps {
   coverImage?: SanityImageSource | null;
 }
 
-function getCoverImageUrl(coverImage?: SanityImageSource | null): string | null {
-  if (!coverImage) return null;
-  try {
-    return urlFor(coverImage).width(88).height(88).fit("crop").url();
-  } catch {
-    return null;
-  }
-}
-
 export function CourseIcon({ slug, title, coverImage }: CourseIconProps) {
-  // 1. Next.js
+  // 1. Cover image from course document
+  const coverSrc = getCourseCoverImageUrl(coverImage, 96, 96);
+  if (coverSrc) {
+    return (
+      <div className="w-11 h-11 rounded-[10px] overflow-hidden border border-[#EDE5DF] relative shrink-0 shadow-2xs">
+        <Image
+          src={coverSrc}
+          alt={title}
+          fill
+          className="object-cover"
+          sizes="44px"
+        />
+      </div>
+    );
+  }
   if (slug.includes("nextjs") || slug.includes("next-js")) {
     return (
       <div className="w-11 h-11 rounded-[10px] bg-black text-white flex items-center justify-center font-bold text-[19px] select-none shadow-2xs">
@@ -111,22 +116,6 @@ export function CourseIcon({ slug, title, coverImage }: CourseIconProps) {
     return (
       <div className="w-11 h-11 rounded-[10px] bg-[#DC2626] text-white flex items-center justify-center font-bold text-[14.5px] font-mono tracking-tighter select-none shadow-2xs">
         SEC
-      </div>
-    );
-  }
-
-  // Fallback: cover image if available
-  const coverSrc = getCoverImageUrl(coverImage);
-  if (coverSrc) {
-    return (
-      <div className="w-11 h-11 rounded-[10px] overflow-hidden border border-[#EDE5DF] relative">
-        <Image
-          src={coverSrc}
-          alt={title}
-          fill
-          className="object-cover"
-          sizes="44px"
-        />
       </div>
     );
   }

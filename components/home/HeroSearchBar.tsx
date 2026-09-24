@@ -45,7 +45,7 @@ export function HeroSearchBar() {
           aria-label="Ask anything about your learning"
         />
         <kbd className="hidden sm:inline-flex items-center justify-center px-2 py-0.5 rounded-[6px] bg-[#F8FAFC] border border-[#E2E8F0] text-[#64748B] text-[11.5px] font-medium tracking-tight shadow-2xs select-none ml-2">
-          ⌘ K
+          <span className="bg-white text-black px-1.5 py-0.5 rounded-[6px] mr-0.5">⌘</span> <span>K</span>
         </kbd>
       </form>
     </div>

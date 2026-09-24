@@ -5,7 +5,7 @@ export interface IconProps extends React.SVGProps<SVGSVGElement> {
   className?: string;
 }
 
-export function VertexLogo({ size = 32, className = "" }: IconProps) {
+export function LearnXLogo({ size = 32, className = "" }: IconProps) {
   return (
     <svg
       width={size}
@@ -15,17 +15,31 @@ export function VertexLogo({ size = 32, className = "" }: IconProps) {
       xmlns="http://www.w3.org/2000/svg"
       className={className}
     >
+      {/* Primary ascending diagonal (learning / growth vector) */}
       <path
-        d="M6 7L16 25L26 7H20.5L16 16.5L11.5 7H6Z"
+        d="M20.2 6H26L11.8 26H6L20.2 6Z"
         fill="#4F46E5"
       />
+      {/* Upper-left crossing facet */}
       <path
-        d="M16 7L18 11.5H14L16 7Z"
+        d="M6 6H11.8L16 11.9L13.1 16L6 6Z"
         fill="#6366F1"
+      />
+      {/* Lower-right crossing facet */}
+      <path
+        d="M18.9 16L16 20.1L20.2 26H26L18.9 16Z"
+        fill="#4338CA"
+      />
+      {/* Center dimensional fold accent */}
+      <path
+        d="M16 11.9L18.9 16L16 20.1L13.1 16Z"
+        fill="#818CF8"
       />
     </svg>
   );
 }
+
+export const VertexLogo = LearnXLogo;
 
 export function BellIcon({ size = 24, className = "" }: IconProps) {
   return (
@@ -625,5 +639,62 @@ export function CloseIcon({ size = 24, className = "" }: IconProps) {
     </svg>
   );
 }
+
+export function CheckIcon({ size = 24, className = "" }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <polyline points="20 6 9 17 4 12" />
+    </svg>
+  );
+}
+
+export function BookOpenIcon({ size = 24, className = "" }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2z" />
+      <path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7z" />
+    </svg>
+  );
+}
+
+export function SparklesIcon({ size = 24, className = "" }: IconProps) {
+  return (
+    <svg
+      width={size}
+      height={size}
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+    >
+      <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z" />
+    </svg>
+  );
+}
+
+
 
 
